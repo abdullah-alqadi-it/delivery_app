@@ -1,197 +1,21 @@
 import 'package:flutter/material.dart';
-import '../../../controller/home/home_controller.dart';
 import '../../../data/models/banner_model.dart';
+import 'banner_card_item.dart';
 
-class BannerSlider extends StatefulWidget {
-  final List<BannerModel> banners;
-  // final BannerModel banner;
-
+class BannerSlider extends StatelessWidget {
   const BannerSlider({super.key, required this.banners});
 
-  @override
-  State<BannerSlider> createState() => _BannerSliderState();
-}
+  final List<BannerModel> banners;
 
-class _BannerSliderState extends State<BannerSlider> {
-  // final HomeController _controller = HomeController();
   @override
   Widget build(BuildContext context) {
-    // final banner = _controller.getRestaurants;
-
     return SizedBox(
       height: 230,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: widget.banners.length,
-        itemBuilder: (context, index) {
-          final item = widget.banners[index];
-
-          return Stack(
-            children: [
-              Container(
-                width: 272,
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(15),
-                  image: DecorationImage(
-                    image: AssetImage(item.productImage),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 10,
-                right: 10,
-                child: Container(
-                  width: 40,
-                  height: 40,
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Colors.black38,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(7),
-                      bottomRight: Radius.circular(15),
-                    ),
-                  ),
-                  child: IconButton(
-                    padding: const EdgeInsets.all(2),
-                    onPressed: () {},
-                    icon: Icon(Icons.zoom_in, color: Colors.white, size: 25),
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 20,
-                left: 68,
-                child: Row(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.only(
-                        top: 1,
-                        bottom: 1,
-                        left: 2,
-                        right: 2,
-                      ),
-                      // decoration: BoxDecoration(
-                      //   borderRadius: BorderRadius.circular(2),
-                      // ),
-                      color: Color(0xFFF31403),
-                      child: Text(
-                        '${item.nameStore}',
-                        style: TextStyle(color: Colors.white),
-                      ),
-                    ),
-                    CircleAvatar(
-                      radius: 25,
-                      backgroundImage: AssetImage(item.imageStore!),
-                      // child: Image.asset('assets/images/p.jpg',fit: BoxFit.cover,),
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                  top: 30,
-                  right: 20,
-                  child: Column(
-                    children: [
-                      ...item.offers.map((offer){
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 8.0),
-                          child: DiscountTag(
-                            percentage: "${offer.discount}%",
-                            subtitle_1: '${offer.subtitle_1}',
-                            subtitle_2: '${offer.subtitle_2}',
-                          ),
-                        );
-                      }),
-                    ],
-                  )
-              ),
-            ],
-          );
-        },
+        itemCount: banners.length,
+        itemBuilder: (context, index) => BannerCardItem(banner: banners[index]),
       ),
-    );
-  }
-}
-//====================================================
-
-class DiscountTag extends StatelessWidget {
-  const DiscountTag({
-    super.key,
-    required this.percentage,
-    required this.subtitle_1,
-    required this.subtitle_2,
-  });
-
-  final String percentage; // النسبة المئوية للخصم
-  final String subtitle_1;
-  final String subtitle_2;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Transform.rotate(
-          angle: -0.1, // زاوية الميل (يمكن تعديلها)
-          child: Container(
-            width: 60,
-            height: 60,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(50),
-              color: Color(0xFFF31403),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              percentage, // عرض النسبة (مثلاً 30%)
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.w900,
-                fontSize: 25,
-              ),
-            ),
-          ),
-        ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.only(
-                top: 2,
-                bottom: 2,
-                left: 2,
-                right: 10,
-              ),
-              color: Colors.blueAccent,
-              child: Text(
-                subtitle_1,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 17,
-                ),
-              ),
-            ),
-            Container(
-              padding: const EdgeInsets.only(
-                top: 2,
-                bottom: 2,
-                left: 2,
-                right: 10,
-              ),
-              color: Colors.amber,
-              child: Text(
-                subtitle_2,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w800,
-                  fontSize: 20,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

@@ -12,7 +12,8 @@ class StyleIcon extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white24,
         borderRadius: BorderRadius.circular(12),
-      ), color: Colors.white,
+      ),
+      color: Colors.white,
       child: child,
     );
   }

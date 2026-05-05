@@ -1,15 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../core/constant/app_colors.dart';
 import '../../../core/shared/primary_button.dart';
-
-const Color kBg           = Color(0xFF1A1A1A);
-const Color kCard         = Color(0xFF2A2A2A);
-const Color kOrange       = Color(0xFFF5A623);
-const Color kRed          = Color(0xFFD32F2F);
-const Color kRedBorder    = Color(0xFFB71C1C);
-const Color kTextPrimary  = Color(0xFFFFFFFF);
-const Color kTextSecondary= Color(0xFF9E9E9E);
-const Color kIconGrey     = Color(0xFF757575);
-
 
 class AddressModel {
   final String id;
@@ -18,9 +9,7 @@ class AddressModel {
   AddressModel({required this.id, required this.label});
 }
 
-// ─────────────────────────────────────────────
-// Page
-// ─────────────────────────────────────────────
+// ───────────────Page──────────────────────────────
 class AddressesPage extends StatefulWidget {
   const AddressesPage({super.key});
 
@@ -37,35 +26,35 @@ class _AddressesPageState extends State<AddressesPage> {
   void _delete(String id) {
     showDialog(
       context: context,
-      builder: (_) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: AlertDialog(
-          backgroundColor: kCard,
-          title: const Text(
-            'حذف العنوان',
-            style: TextStyle(color: kTextPrimary),
-          ),
-          content: const Text(
-            'هل أنت متأكد من حذف هذا العنوان؟',
-            style: TextStyle(color: kTextSecondary),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إلغاء',
-                style: TextStyle(color: kTextSecondary),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                setState(() => _addresses.removeWhere((a) => a.id == id));
-                Navigator.pop(context);
-              },
-              child: const Text('حذف', style: TextStyle(color: kRed)),
-            ),
-          ],
+      builder: (_) => AlertDialog(
+        backgroundColor: AppColors.kCard2,
+        title: const Text(
+          'حذف العنوان',
+          style: TextStyle(color: AppColors.black),
         ),
+        content: const Text(
+          'هل أنت متأكد من حذف هذا العنوان؟',
+          style: TextStyle(color: AppColors.black),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text(
+              'إلغاء',
+              style: TextStyle(color: AppColors.black),
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              setState(() => _addresses.removeWhere((a) => a.id == id));
+              Navigator.pop(context);
+            },
+            child: const Text(
+              'حذف',
+              style: TextStyle(color: const Color(0xFFEB1E49)),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -85,23 +74,23 @@ class _AddressesPageState extends State<AddressesPage> {
       builder: (_) => Directionality(
         textDirection: TextDirection.rtl,
         child: AlertDialog(
-          backgroundColor: kCard,
+          backgroundColor: AppColors.kCard2,
           title: const Text(
             'إضافة عنوان',
-            style: TextStyle(color: kTextPrimary),
+            style: TextStyle(color: AppColors.black),
           ),
           content: TextField(
             controller: ctrl,
             autofocus: true,
-            style: const TextStyle(color: kTextPrimary),
+            style: const TextStyle(color: AppColors.black),
             decoration: const InputDecoration(
               hintText: 'أدخل العنوان',
-              hintStyle: TextStyle(color: kTextSecondary),
+              hintStyle: TextStyle(color: AppColors.black),
               enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: kOrange),
+                borderSide: BorderSide(color: AppColors.kOrange),
               ),
               focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: kOrange, width: 2),
+                borderSide: BorderSide(color: AppColors.kOrange, width: 2),
               ),
             ),
           ),
@@ -110,7 +99,7 @@ class _AddressesPageState extends State<AddressesPage> {
               onPressed: () => Navigator.pop(context),
               child: const Text(
                 'إلغاء',
-                style: TextStyle(color: kTextSecondary),
+                style: TextStyle(color: AppColors.black),
               ),
             ),
             TextButton(
@@ -128,7 +117,10 @@ class _AddressesPageState extends State<AddressesPage> {
                 }
                 Navigator.pop(context);
               },
-              child: const Text('إضافة', style: TextStyle(color: kOrange)),
+              child: const Text(
+                'إضافة',
+                style: TextStyle(color: AppColors.kOrange),
+              ),
             ),
           ],
         ),
@@ -139,77 +131,70 @@ class _AddressesPageState extends State<AddressesPage> {
   // ── Build ─────────────────────────────────────
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: kBg,
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(
-            'العناوين',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+    return Scaffold(
+      // backgroundColor: ,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFEB1E49),
+        title: Text(
+          'العناوين',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          leading: IconButton(
-              onPressed: (){
-                Navigator.pop(context);
-              },
-              icon: Icon(Icons.arrow_back,size: 26,color: Colors.white,)
-          ),
-          centerTitle: true,
         ),
-        body: Stack(
-          children: [
-            // ── List / Empty state ──────────────
-            _addresses.isEmpty
-                ? const Center(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(
-                          Icons.location_off,
-                          color: kTextSecondary,
-                          size: 64,
-                        ),
-                        SizedBox(height: 12),
-                        Text(
-                          'لا توجد عناوين مضافة',
-                          style: TextStyle(color: kTextSecondary, fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  )
-                : ListView.separated(
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
-                    itemCount: _addresses.length,
-                    separatorBuilder: (_, __) => const SizedBox(height: 12),
-                    itemBuilder: (_, i) => _AddressCard(
-                      address: _addresses[i],
-                      onDelete: () => _delete(_addresses[i].id),
-                      // onEdit: () => _edit(_addresses[i]),
-                    ),
-                  ),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
+        ),
+        centerTitle: true,
+        toolbarHeight: 65,
+      ),
 
-            // ── Add Button ───────────────────
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 16,
-              child: PrimaryButton(label: 'اضافة', onTap: _add),
-            ),
-          ],
-        ),
+      body: Stack(
+        children: [
+          // ── List / Empty state ──────────────
+          _addresses.isEmpty
+              ? Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(Icons.location_off, color: Colors.white, size: 64),
+                      SizedBox(height: 12),
+                      Text(
+                        'لا توجد عناوين مضافة',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
+                    ],
+                  ),
+                )
+              : ListView.separated(
+                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
+                  itemCount: _addresses.length,
+                  separatorBuilder: (_, __) => const SizedBox(height: 12),
+                  itemBuilder: (_, i) => _AddressCard(
+                    address: _addresses[i],
+                    onDelete: () => _delete(_addresses[i].id),
+                    // onEdit: () => _edit(_addresses[i]),
+                  ),
+                ),
+
+          // ── Add Button ───────────────────
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
+            child: PrimaryButton(label: 'اضافة', onTap: _add),
+          ),
+        ],
       ),
     );
   }
 }
 
-// ─────────────────────────────────────────────
-// Address Card Widget
-// ─────────────────────────────────────────────
+// ─────────────Address Card Widget────────────────────────────────
 class _AddressCard extends StatelessWidget {
   final AddressModel address;
   final VoidCallback onDelete;
@@ -227,7 +212,7 @@ class _AddressCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: kRedBorder, width: 1.5),
+        border: Border.all(color: AppColors.kRedBorder, width: 1.5),
       ),
       padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
       child: Column(
@@ -241,7 +226,7 @@ class _AddressCard extends StatelessWidget {
                 width: 38,
                 height: 38,
                 decoration: const BoxDecoration(
-                  color: kRed,
+                  color: AppColors.kRedBorder,
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
@@ -256,7 +241,7 @@ class _AddressCard extends StatelessWidget {
                   address.label,
                   textAlign: TextAlign.right,
                   style: const TextStyle(
-                    color: kTextPrimary,
+                    color: AppColors.black,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
                   ),
@@ -276,8 +261,8 @@ class _AddressCard extends StatelessWidget {
                   icon: const Icon(Icons.delete_outline, size: 18),
                   label: const Text('حذف'),
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: kRed,
-                    side: const BorderSide(color: kRed),
+                    foregroundColor: AppColors.kRedBorder,
+                    side: const BorderSide(color: AppColors.kRedBorder),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -289,10 +274,10 @@ class _AddressCard extends StatelessWidget {
               // Edit
               Expanded(
                 child: OutlinedButton(
-                  onPressed: (){},
+                  onPressed: () {},
                   style: OutlinedButton.styleFrom(
-                    foregroundColor: kOrange,
-                    side: const BorderSide(color: kOrange),
+                    foregroundColor: AppColors.kOrange,
+                    side: const BorderSide(color: AppColors.kOrange),
                     padding: const EdgeInsets.symmetric(vertical: 12),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),

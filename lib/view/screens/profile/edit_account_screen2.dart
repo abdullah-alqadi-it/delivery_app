@@ -39,27 +39,32 @@ class _EditAccountScreen2State extends State<EditAccountScreen2> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: const Color(0xFF121212),
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          title: Text(
-            'تعديل الحساب',
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFEB1E49),
+        title: Text(
+          'تعديل الحساب',
+          style: const TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
-          centerTitle: true,
         ),
-        body: Stack(
-          children: [
-            Column(
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
+        ),
+        toolbarHeight: 65,
+        centerTitle: true,
+      ),
 
-              crossAxisAlignment: CrossAxisAlignment.start,
+      body: Stack(
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+            child: Column(
               children: [
                 // ── Form Fields ──────────────
                 _InputField(
@@ -93,9 +98,9 @@ class _EditAccountScreen2State extends State<EditAccountScreen2> {
                 Container(
                   margin: EdgeInsets.symmetric(horizontal: 8),
                   decoration: BoxDecoration(
-                    color: Color(0xFF393838),
+                    color: Color(0xFFCAC8C8),
                     borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: Colors.white10),
+                    // border: Border.all(color: Colors.white10),
                   ),
                   padding: const EdgeInsets.all(16),
                   child: Column(
@@ -107,17 +112,17 @@ class _EditAccountScreen2State extends State<EditAccountScreen2> {
                         style: TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                       const SizedBox(height: 6),
                       const Text(
                         'اضغط على الخريطة لتحديد موقع التوصيل الدقيق، '
-                        'أو اسحب الدبوس لتعديل الموقع.',
+                            'أو اسحب الدبوس لتعديل الموقع.',
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.white,
+                          color: Colors.black,
                           height: 1.5,
                         ),
                       ),
@@ -160,16 +165,16 @@ class _EditAccountScreen2State extends State<EditAccountScreen2> {
                 ),
               ],
             ),
+          ),
 
-            // ── Save Button ──────────────────
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 16,
-              child: PrimaryButton(label: 'حفظ', onTap: _onSave),
-            ),
-          ],
-        ),
+          // ── Save Button ──────────────────
+          Positioned(
+            left: 16,
+            right: 16,
+            bottom: 16,
+            child: PrimaryButton(label: 'حفظ', onTap: _onSave),
+          ),
+        ],
       ),
     );
   }
@@ -193,19 +198,19 @@ class _InputField extends StatelessWidget {
     return Container(
       margin: EdgeInsets.symmetric(horizontal: 8),
       decoration: BoxDecoration(
-        color: Color(0xFF393838),
+        color: Color(0xFFCAC8C8),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.white10),
+        // border: Border.all(color: Colors.white10),
       ),
       child: TextField(
         controller: controller,
         keyboardType: keyboardType,
         textAlign: TextAlign.right,
-        style: const TextStyle(color: Colors.white, fontSize: 15),
+        style: const TextStyle(color: Colors.black, fontSize: 15),
         decoration: InputDecoration(
           hintText: hint,
-          hintStyle: const TextStyle(color: Colors.white),
-          prefixIcon: Icon(icon, color: Color(0xFF757575), size: 22),
+          hintStyle: const TextStyle(color: Colors.black),
+          prefixIcon: Icon(icon, color: Colors.black, size: 22),
           border: InputBorder.none,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: 16,

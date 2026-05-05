@@ -18,7 +18,7 @@ dependencies:
   flutter_animate: ^4.5.2
 
   http: ^1.6.0
-  dio: ^5.9.0
+#  dio: ^5.9.0
   sqflite: ^2.4.2
   hive: ^2.2.3
   shared_preferences: ^2.5.4
@@ -56,7 +56,26 @@ flutter:
   # https://flutter.dev/to/asset-from-package
 
 
-  # fonts:
+  fonts:
+    - family: Cairo
+      fonts:
+        - asset: assets/fonts/Cairo-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Cairo-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Cairo-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Cairo-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Cairo-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Cairo-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Cairo-ExtraBold.ttf
+          weight: 800
+        - asset: assets/fonts/Cairo-Black.ttf
+          weight: 900
+
   #   - family: Schyler
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
