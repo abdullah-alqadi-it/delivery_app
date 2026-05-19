@@ -45,7 +45,6 @@ class CategoryItem extends StatelessWidget {
           // المربع الثابت "كل التصنيفات"
           GestureDetector(
             onTap: () {
-              // إظهار نافذة منبثقة (Dialog) فيها شبكة التصنيفات
               showDialog(
                 context: context,
                 builder: (context) {

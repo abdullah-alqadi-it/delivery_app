@@ -2,95 +2,111 @@ import 'package:flutter/material.dart';
 import '../../../../data/models/restaurant_model.dart';
 
 class RestaurantCard extends StatefulWidget {
-  // final RestaurantModel restaurant;
+  const RestaurantCard({super.key, required this.restaurant});
 
-  const RestaurantCard({super.key});
+  final RestaurantModel restaurant;
 
   @override
   State<RestaurantCard> createState() => _RestaurantCardState();
 }
 
 class _RestaurantCardState extends State<RestaurantCard> {
-  bool _isFavorite = false;
+  late bool _isFavorite;
+
+  @override
+  void initState() {
+    super.initState();
+    _isFavorite = widget.restaurant.isFavorite;
+  }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 12.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 0.0),
       child: Row(
         children: [
-          // لوغو المطعم وتقييمه
           Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  border: BoxBorder.fromBorderSide(
-                    BorderSide(color: Colors.red),
-                  ),
                   borderRadius: BorderRadius.circular(8),
-                  // image: DecorationImage(image: AssetImage("assets/images/chicken-cutlet.jpg"),
-                  // fit: BoxFit.cover,)
+                  border: Border.all(color: Colors.grey.shade200),
                 ),
-                child: Image.asset(
-                  "assets/images/chicken-cutlet.jpg",
-                  width: 50,
-                  height: 50,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(8),
+                  child: Image.asset(
+                    widget.restaurant.imageUrl,
+                    width: 50,
+                    height: 50,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.restaurant, size: 40),
+                  ),
                 ),
               ),
-              _buildStars(3),
+              const SizedBox(height: 4),
+              Text('216.61 كيلو',style: Theme.of(context).textTheme.bodySmall,),
+              const SizedBox(height: 2),
+              _buildStars(widget.restaurant.rating),
             ],
           ),
-          const SizedBox(width: 10),
-          // تفاصيل المطعم
+          const SizedBox(width: 12),
+
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  "مطعم القلعة",
-                  style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
+                Text(
+                    widget.restaurant.name,
+                    style: Theme.of(context).textTheme.bodyLarge
                 ),
                 Text(
-                  "شارع الخمسين جوار سما مول",
-                  style: TextStyle(color: Colors.grey[700], fontSize: 11),
+                  widget.restaurant.address,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _buildTag("توصيل برو", Icons.icecream_rounded),
-                    const SizedBox(width: 5),
-                    _buildTag("استلم بنفسك", Icons.incomplete_circle),
-                  ],
+                const SizedBox(height: 5),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: [
+                      _buildTag(
+                        widget.restaurant.category,
+                        Icons.restaurant_menu,
+                      ),
+                      const SizedBox(width: 5),
+                      _buildTag("توصيل سريع", Icons.delivery_dining),
+
+                      const SizedBox(width: 5),
+                      _buildTag("توصيل برو", Icons.delivery_dining),
+                    ],
+                  ),
                 ),
               ],
             ),
           ),
+
           Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 10,
-                  vertical: 3,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                 decoration: BoxDecoration(
-                  color: const Color(0xFFE8192C),
+                  color: widget.restaurant.isOpen
+                      ? Colors.green
+                      : const Color(0xFFE8192C),
                   borderRadius: BorderRadius.circular(5),
                 ),
-                child: const Text(
-                  'مغلق',
-                  style: TextStyle(
+                child: Text(
+                  widget.restaurant.isOpen ? 'مفتوح' : 'مغلق',
+                  style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 12,
+                    fontSize: 10,
                     fontWeight: FontWeight.bold,
                   ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const SizedBox(width: 8),
               IconButton(
                 icon: Icon(
                   _isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -109,67 +125,41 @@ class _RestaurantCardState extends State<RestaurantCard> {
       ),
     );
   }
-}
-// ClipRRect(
-// borderRadius: BorderRadius.circular(10),
-// child: Container(
-// width: 70,
-// height: 70,
-// color: const Color(0xFFF5F5F5),
-// child: widget.restaurant.imageUrl.isNotEmpty &&
-// !widget.restaurant.imageUrl.startsWith('assets')
-// ? Image.network(
-// widget.restaurant.imageUrl,
-// fit: BoxFit.cover,
-// errorBuilder: (_, __, ___) => _buildPlaceholderLogo(),
-// )
-//     : _buildPlaceholderLogo(),
-// ),
-// ),
 
-// Widget _buildPlaceholderLogo() {
-//   return Center(
-//     child: Text(
-//       widget.restaurant.name.isNotEmpty
-//           ? widget.restaurant.name[0]
-//           : '?',
-//       style: const TextStyle(
-//         fontSize: 24,
-//         fontWeight: FontWeight.bold,
-//         color: Color(0xFFE8192C),
-//       ),
-//     ),
-//   );
-// }
+  // دالة بناء التاجات
+  Widget _buildTag(String label, IconData icon) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Row(
+        children: [
+          Icon(icon, color: const Color(0xFFE8192C), size: 12),
+          const SizedBox(width: 3),
+          Text(
+            label,
+            style: const TextStyle(color: Colors.black87, fontSize: 9),
+          ),
+        ],
+      ),
+    );
+  }
 
-Widget _buildTag(String label, IconData con) {
-  return Container(
-    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-    decoration: BoxDecoration(
-      color: Colors.grey[400],
-      borderRadius: BorderRadius.circular(5),
-    ),
-    child: Row(
-      children: [
-        Icon(con, color: Colors.red),
-        SizedBox(width: 3),
-        Text(label, style: const TextStyle(color: Colors.white, fontSize: 9)),
-      ],
-    ),
-  );
-}
-
-Widget _buildStars(double rating) {
-  return Row(
-    mainAxisSize: MainAxisSize.min,
-    children: List.generate(5, (index) {
-      if (index < rating.floor()) {
-        return const Icon(Icons.star, color: Colors.amber, size: 15);
-      } else if (index < rating && rating % 1 != 0) {
-        return const Icon(Icons.star_half, color: Colors.amber, size: 15);
-      } else {
-        return const Icon(Icons.star_border, color: Colors.amber, size: 15);
-      }
-    }),
-  );
+  // دالة بناء النجوم
+  Widget _buildStars(double rating) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: List.generate(5, (index) {
+        if (index < rating.floor()) {
+          return const Icon(Icons.star, color: Colors.amber, size: 12);
+        } else if (index < rating && rating % 1 != 0) {
+          return const Icon(Icons.star_half, color: Colors.amber, size: 12);
+        } else {
+          return const Icon(Icons.star_border, color: Colors.amber, size: 12);
+        }
+      }),
+    );
+  }
 }

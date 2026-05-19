@@ -16,123 +16,127 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Directionality(
-      textDirection: TextDirection.rtl,
-      child: Scaffold(
-        backgroundColor: const Color(0xFF121212),
+    return Scaffold(
+      backgroundColor: const Color(0xFFE4E0E2),
 
-        appBar: AppBar(
-          backgroundColor: Colors.black,
-          centerTitle: true,
-          title: Text('إدارة الحساب', style: TextStyle(color: Colors.white)),
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pop(context);
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFEB1E49),
+        centerTitle: true,
+        title: Text('إدارة الحساب', style: TextStyle(color: Colors.white)),
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
+        ),
+        toolbarHeight: 65,
+      ),
+
+      body: ListView(
+        padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
+        children: [
+          _buildLocationBadge(),
+
+          CardSetting(
+            icon: FontAwesomeIcons.user,
+            title: "الحساب",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => EditAccountScreen2()),
+              );
             },
-            icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
           ),
-        ),
+          CardSetting(
+            icon: FontAwesomeIcons.receipt,
+            title: "طلباتي",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.card_membership_outlined,
+            title: "الاشتراكات (توصيل برو)",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: FontAwesomeIcons.wallet,
+            title: "رصيدي",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.location_on_outlined,
+            title: "العناوين",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => AddressesPage()),
+              );
+            },
+          ),
+          CardSetting(
+            icon: FontAwesomeIcons.city,
+            title: "تغيير المدينة",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.mark_as_unread_outlined,
+            title: "تواصل معنا",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.notes_outlined,
+            title: "سياسة الخصوصية",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.share_outlined,
+            title: "مشاركة التطبيق",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.play_circle_outline,
+            title: "كيفية استخدام التطبيق",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.restart_alt,
+            title: "تحديث بيانات التطبيق",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.dark_mode_outlined,
+            title: "مظهر التطبيق",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.language,
+            title: "لغةالتطبيق",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.edit_notifications_outlined,
+            title: "ادارة الاقتراحات",
+            onTap: () {},
+          ),
+          CardSetting(
+            icon: Icons.logout,
+            title: "تسجيل الخروج",
+            onTap: () {},
+          ),
 
-        body: ListView(
-          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
-          children: [
-            _buildLocationBadge(),
+          _buildAdvancedSettingsSection(),
 
-            CardSetting(
-              icon: FontAwesomeIcons.user,
-              title: "الحساب",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => EditAccountScreen2()),
-                );
-              },
-            ),
-            CardSetting(
-              icon: FontAwesomeIcons.receipt,
-              title: "طلباتي",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.card_membership_outlined,
-              title: "الاشتراكات (توصيل برو)",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: FontAwesomeIcons.wallet,
-              title: "رصيدي",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.location_on_outlined,
-              title: "العناوين",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => AddressesPage()),
-                );
-              },
-            ),
-            CardSetting(
-              icon: FontAwesomeIcons.city,
-              title: "تغيير المدينة",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.mark_as_unread_outlined,
-              title: "تواصل معنا",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.notes_outlined,
-              title: "سياسة الخصوصية",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.share_outlined,
-              title: "مشاركة التطبيق",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.play_circle_outline,
-              title: "كيفية استخدام التطبيق",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.restart_alt,
-              title: "تحديث بيانات التطبيق",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.dark_mode_outlined,
-              title: "مظهر التطبيق",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.edit_notifications_outlined,
-              title: "ادارة الاقتراحات",
-              onTap: () {},
-            ),
-            CardSetting(
-              icon: Icons.logout,
-              title: "تسجيل الخروج",
-              onTap: () {},
-            ),
-
-            _buildAdvancedSettingsSection(),
-
-            const Text(
-              "الاصدار: 2.0.39",
-              style: TextStyle(color: Colors.white30, fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-            const Text(
-              'تم التطوير بواسطة شلة الانس',
-              style: TextStyle(color: Colors.white30, fontSize: 16),
-              textAlign: TextAlign.center,
-            ),
-          ],
-        ),
+          Text(
+            "الاصدار: 2.0.39",
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          Text(
+            'تم التطوير بواسطة شلة الانس',
+            style: Theme.of(context).textTheme.bodyMedium,
+            textAlign: TextAlign.center,
+          ),
+          SizedBox(height: 10,)
+        ],
       ),
     );
   }
@@ -143,21 +147,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
       margin: const EdgeInsets.only(top: 10, bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: Color(0xFF3E1B22),
+        color: Color(0xFFD57084),
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const Icon(Icons.location_on, color: Colors.white, size: 18),
+          const Icon(Icons.location_on, color: Colors.black, size: 18),
           const SizedBox(width: 8),
-          const Text(
+          Text(
             'المنطقة الحالية: صنعاء',
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-            ),
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
         ],
       ),
