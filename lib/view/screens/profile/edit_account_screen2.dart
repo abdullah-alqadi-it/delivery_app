@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../core/shared/primary_button.dart';
+import '../../../core/shared/custom_button.dart';
 
 class EditAccountScreen2 extends StatefulWidget {
   const EditAccountScreen2({super.key});
@@ -118,7 +118,7 @@ class _EditAccountScreen2State extends State<EditAccountScreen2> {
                       const SizedBox(height: 6),
                       const Text(
                         'اضغط على الخريطة لتحديد موقع التوصيل الدقيق، '
-                            'أو اسحب الدبوس لتعديل الموقع.',
+                        'أو اسحب الدبوس لتعديل الموقع.',
                         textAlign: TextAlign.right,
                         style: TextStyle(
                           fontSize: 13,
@@ -172,7 +172,7 @@ class _EditAccountScreen2State extends State<EditAccountScreen2> {
             left: 16,
             right: 16,
             bottom: 16,
-            child: PrimaryButton(label: 'حفظ', onTap: _onSave),
+            child: CustomButton(label: 'حفظ', onPressed: _onSave),
           ),
         ],
       ),

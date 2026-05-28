@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/constant/app_colors.dart';
+
 class CardSetting extends StatelessWidget {
   const CardSetting({
     super.key,
-    required this.icon,
+    required this.imagePath,
     required this.title,
     required this.onTap,
   });
 
-  final IconData icon;
+  final String imagePath;
   final String title;
   final void Function() onTap;
 
@@ -18,15 +20,16 @@ class CardSetting extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 8.0),
       child: Card(
         elevation: 3,
-        color: const Color(0xFFFFFEFE),
+        color: AppColors.white,
         child: ListTile(
+          contentPadding: EdgeInsets.only(left: 5,right: 12),
           leading: Container(
-            padding: const EdgeInsets.all(3),
+            padding: const EdgeInsets.all(6),
             decoration: BoxDecoration(
               color: const Color(0xFFEFD5DB),
-              borderRadius: BorderRadius.circular(6),
+              borderRadius: BorderRadius.circular(8),
             ),
-            child: Icon(icon, color: Color(0xFFA50426)),
+            child: Image.asset(imagePath,width: 24,height: 24,color: AppColors.red400,),
           ),
           title: Text(
             title,
@@ -34,8 +37,8 @@ class CardSetting extends StatelessWidget {
           ),
           trailing: const Icon(
             Icons.arrow_forward_ios,
-            color: Colors.black,
-            size: 16,
+            color: AppColors.black,
+            size: 18,
           ),
           onTap: onTap,
         ),

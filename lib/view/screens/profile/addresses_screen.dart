@@ -1,140 +1,100 @@
 import 'package:flutter/material.dart';
+import '../../../controller/profile/address_controller.dart';
 import '../../../core/constant/app_colors.dart';
-import '../../../core/shared/primary_button.dart';
+import '../../../core/shared/custom_bottom_sheet.dart';
+import '../../../core/shared/custom_button.dart';
+import '../../../data/models/address_model.dart';
+import '../../widgets/profile/address_card.dart';
+import '../../widgets/profile/city_bottom_sheet.dart';
+import 'map_address_screen.dart';
 
-class AddressModel {
-  final String id;
-  String label;
-
-  AddressModel({required this.id, required this.label});
-}
-
-// ───────────────Page──────────────────────────────
-class AddressesPage extends StatefulWidget {
-  const AddressesPage({super.key});
+class AddressesScreen extends StatefulWidget {
+  const AddressesScreen({super.key});
 
   @override
-  State<AddressesPage> createState() => _AddressesPageState();
+  State<AddressesScreen> createState() => _AddressesScreenState();
 }
 
-class _AddressesPageState extends State<AddressesPage> {
-  final List<AddressModel> _addresses = [
-    AddressModel(id: '1', label: 'جوار مستشفى الصداقة'),
-  ];
+class _AddressesScreenState extends State<AddressesScreen> {
+  final AddressController _addressController = AddressController();
 
-  // ── Delete ────────────────────────────────────
-  void _delete(String id) {
-    showDialog(
-      context: context,
-      builder: (_) => AlertDialog(
-        backgroundColor: AppColors.kCard2,
-        title: const Text(
-          'حذف العنوان',
-          style: TextStyle(color: AppColors.black),
-        ),
-        content: const Text(
-          'هل أنت متأكد من حذف هذا العنوان؟',
-          style: TextStyle(color: AppColors.black),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text(
-              'إلغاء',
-              style: TextStyle(color: AppColors.black),
-            ),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() => _addresses.removeWhere((a) => a.id == id));
-              Navigator.pop(context);
-            },
-            child: const Text(
-              'حذف',
-              style: TextStyle(color: const Color(0xFFEB1E49)),
-            ),
-          ),
-        ],
+  void _navigateToMapScreen({AddressModel? addressToEdit}) async {
+    final result = await Navigator.push<AddressModel>(
+      context,
+      MaterialPageRoute(
+        builder: (_) => MapAddressScreen(addressToEdit: addressToEdit),
       ),
     );
+
+    if (result != null) {
+      setState(() {
+        if (addressToEdit != null) {
+          // Edit address
+          final index = _addressController.getAddresses.indexWhere(
+            (a) => a.id == addressToEdit.id,
+          );
+          if (index != -1) {
+            _addressController.getAddresses[index] = result;
+          }
+        } else {
+          // Add new address
+          _addressController.getAddresses.add(result);
+        }
+      });
+    }
   }
 
-  // ── Edit ──────────────────────────────────────
-  // void _edit(AddressModel address) {
-  //   Navigator.of(
-  //     context,
-  //   ).push(MaterialPageRoute(builder: (_) => const EditAccountPage()));
-  // }
-
-  // ── Add ───────────────────────────────────────
-  void _add() {
-    final ctrl = TextEditingController();
-    showDialog(
+  void _deleteAddress(String id, String address) {
+    showModalBottomSheet(
       context: context,
-      builder: (_) => Directionality(
-        textDirection: TextDirection.rtl,
-        child: AlertDialog(
-          backgroundColor: AppColors.kCard2,
-          title: const Text(
-            'إضافة عنوان',
-            style: TextStyle(color: AppColors.black),
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (_) => CustomBottomSheet(
+        height: MediaQuery.of(context).size.height * 0.3,
+        content: Padding(
+          padding: const EdgeInsets.all(35.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(
+                'هل أنت متأكد من حذف هذا العنوان؟',
+                style: Theme.of(context).textTheme.bodyLarge,
+              ),
+              Text(address, style: Theme.of(context).textTheme.bodyLarge),
+
+              CustomButton(
+                backgroundColor: AppColors.red600,
+                label: 'حذف',
+                onPressed: () {
+                  setState(() {
+                    _addressController.getAddresses.removeWhere(
+                      (a) => a.id == id,
+                    );
+                  });
+                  Navigator.pop(context);
+                },
+              ),
+
+              CustomButton(
+                backgroundColor: AppColors.amber100.withValues(alpha: 0.1),
+                foregroundColor: AppColors.amber100,
+                borderColor: AppColors.amber100,
+                label: 'إلغاء',
+                onPressed: () => Navigator.pop(context),
+              ),
+            ],
           ),
-          content: TextField(
-            controller: ctrl,
-            autofocus: true,
-            style: const TextStyle(color: AppColors.black),
-            decoration: const InputDecoration(
-              hintText: 'أدخل العنوان',
-              hintStyle: TextStyle(color: AppColors.black),
-              enabledBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.kOrange),
-              ),
-              focusedBorder: UnderlineInputBorder(
-                borderSide: BorderSide(color: AppColors.kOrange, width: 2),
-              ),
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Text(
-                'إلغاء',
-                style: TextStyle(color: AppColors.black),
-              ),
-            ),
-            TextButton(
-              onPressed: () {
-                final text = ctrl.text.trim();
-                if (text.isNotEmpty) {
-                  setState(
-                    () => _addresses.add(
-                      AddressModel(
-                        id: DateTime.now().millisecondsSinceEpoch.toString(),
-                        label: text,
-                      ),
-                    ),
-                  );
-                }
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'إضافة',
-                style: TextStyle(color: AppColors.kOrange),
-              ),
-            ),
-          ],
         ),
       ),
     );
   }
 
-  // ── Build ─────────────────────────────────────
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: ,
+      backgroundColor: AppColors.white,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFEB1E49),
+        backgroundColor: AppColors.red400,
         title: Text(
           'العناوين',
           style: const TextStyle(
@@ -147,146 +107,94 @@ class _AddressesPageState extends State<AddressesPage> {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
+          icon: Icon(Icons.arrow_back, size: 26, color: AppColors.white),
         ),
         centerTitle: true,
-        toolbarHeight: 65,
       ),
 
-      body: Stack(
+      body: Column(
         children: [
-          // ── List / Empty state ──────────────
-          _addresses.isEmpty
-              ? Center(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Icon(Icons.location_off, color: Colors.white, size: 64),
-                      SizedBox(height: 12),
-                      Text(
-                        'لا توجد عناوين مضافة',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                )
-              : ListView.separated(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
-                  itemCount: _addresses.length,
-                  separatorBuilder: (_, __) => const SizedBox(height: 12),
-                  itemBuilder: (_, i) => _AddressCard(
-                    address: _addresses[i],
-                    onDelete: () => _delete(_addresses[i].id),
-                    // onEdit: () => _edit(_addresses[i]),
-                  ),
+          Container(
+            color: AppColors.gray200,
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  'ادارة العناوين',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                 ),
-
-          // ── Add Button ───────────────────
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 16,
-            child: PrimaryButton(label: 'اضافة', onTap: _add),
+                CustomButton(
+                  onPressed: () => CityBottomSheet.show(context),
+                  backgroundColor: AppColors.red600,
+                  borderRadius: 6,
+                  height: 30,
+                  width: 133,
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  label: 'تغيير المدينة (صنعاء)',
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-    );
-  }
-}
 
-// ─────────────Address Card Widget────────────────────────────────
-class _AddressCard extends StatelessWidget {
-  final AddressModel address;
-  final VoidCallback onDelete;
-  // final VoidCallback onEdit;
-
-  const _AddressCard({
-    required this.address,
-    required this.onDelete,
-    // required this.onEdit,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(color: AppColors.kRedBorder, width: 1.5),
-      ),
-      padding: const EdgeInsets.fromLTRB(14, 14, 14, 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          // ── Label row ──────────────────────
-          Row(
-            children: [
-              // Icon badge
-              Container(
-                width: 38,
-                height: 38,
-                decoration: const BoxDecoration(
-                  color: AppColors.kRedBorder,
-                  shape: BoxShape.circle,
-                ),
-                child: const Icon(
-                  Icons.location_on,
-                  color: Colors.white,
-                  size: 20,
-                ),
-              ),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Text(
-                  address.label,
-                  textAlign: TextAlign.right,
-                  style: const TextStyle(
-                    color: AppColors.black,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
+          // Address list
+          Expanded(
+            child: _addressController.getAddresses.isEmpty
+                ? Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'ليس لديك أي عناوين',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        SizedBox(height: 8),
+                        CustomButton(
+                          onPressed: () => _navigateToMapScreen(),
+                          backgroundColor: AppColors.red600,
+                          height: 35,
+                          width: 105,
+                          borderRadius: 4,
+                          label: 'إضافة عنوان',
+                        ),
+                      ],
+                    ),
+                  )
+                : ListView.builder(
+                    padding: const EdgeInsets.only(top: 12, bottom: 20),
+                    itemCount: _addressController.getAddresses.length,
+                    itemBuilder: (context, index) {
+                      final address = _addressController.getAddresses[index];
+                      return AddressCard(
+                        address: address,
+                        onEdit: () =>
+                            _navigateToMapScreen(addressToEdit: address),
+                        onDelete: () =>
+                            _deleteAddress(address.id, address.address),
+                        onTap: () {
+                          setState(() {
+                            for (var element
+                                in _addressController.getAddresses) {
+                              element.isSelected = (element == address);
+                            }
+                          });
+                        },
+                      );
+                    },
                   ),
-                ),
-              ),
-            ],
           ),
-          const SizedBox(height: 14),
 
-          // ── Action buttons ─────────────────
-          Row(
-            children: [
-              // Delete
-              Expanded(
-                child: OutlinedButton.icon(
-                  onPressed: onDelete,
-                  icon: const Icon(Icons.delete_outline, size: 18),
-                  label: const Text('حذف'),
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.kRedBorder,
-                    side: const BorderSide(color: AppColors.kRedBorder),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            child: SizedBox(
+              width: double.infinity,
+              height: 52,
+              child: CustomButton(
+                label: 'اضافة',
+                onPressed: () => _navigateToMapScreen(),
               ),
-              const SizedBox(width: 12),
-              // Edit
-              Expanded(
-                child: OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: AppColors.kOrange,
-                    side: const BorderSide(color: AppColors.kOrange),
-                    padding: const EdgeInsets.symmetric(vertical: 12),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                  child: const Text('تعديل', style: TextStyle(fontSize: 15)),
-                ),
-              ),
-            ],
+            ),
           ),
         ],
       ),

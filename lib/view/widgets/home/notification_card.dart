@@ -5,7 +5,8 @@ class NotificationCard extends StatelessWidget {
   const NotificationCard({super.key, required this.data, required this.onTap});
 
   final NotificationsModel data;
-  final Function() onTap;
+
+  final VoidCallback onTap;
 
   @override
   Widget build(BuildContext context) {

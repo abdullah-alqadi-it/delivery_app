@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constant/app_colors.dart';
 
 class CustomIconButton extends StatelessWidget {
   const CustomIconButton({
@@ -17,10 +18,10 @@ class CustomIconButton extends StatelessWidget {
       icon: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-          color: Colors.white24,
+          color: AppColors.white18,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Icon(icon, color: Colors.white),
+        child: Icon(icon, color: AppColors.white,),
       ),
     );
   }
