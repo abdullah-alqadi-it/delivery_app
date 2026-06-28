@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../controller/home/home_controller.dart';
 import '../../../controller/home/notification_controller.dart';
+import '../../../core/constant/app_colors.dart';
 import '../../../core/shared/custom_iconbutton.dart';
 import '../../../core/shared/rounded_body.dart';
 import '../../widgets/home/banner_slider.dart';
@@ -10,27 +11,21 @@ import '../profile/addresses_screen.dart';
 import '../profile/settings_screen.dart';
 import 'notifications_screen.dart';
 
-class HomeScreen extends StatefulWidget {
+class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  @override
   Widget build(BuildContext context) {
-    final HomeController _controller = HomeController();
+    final HomeController controller = HomeController();
 
     return Scaffold(
-      backgroundColor: const Color(0xFFEB1E49),
+      backgroundColor: AppColors.red400,
       appBar: AppBar(
-        backgroundColor: const Color(0xFFEB1E49),
-        // backgroundColor: Colors.white,
+        backgroundColor: AppColors.red400,
         title: InkWell(
           onTap: () {
             Navigator.push(
               context,
-              MaterialPageRoute(builder: (_) => const AddressesPage()),
+              MaterialPageRoute(builder: (_) => const AddressesScreen()),
             );
           },
           child: _buildHeader(),
@@ -38,77 +33,68 @@ class _HomeScreenState extends State<HomeScreen> {
         actions: [_buildHeaderActions(context)],
         toolbarHeight: 65,
       ),
+
       body: RoundedBody(
         borderRadius: 45,
         child: Column(
           children: [
-            // 1. الجزء الثابت تماماً (الحالة والتصنيفات)
+            // 1. هذا الجزء سيبقى ثابتاً ولن يتحرك أبداً مع السحب
             _buildIsOpen(context),
-            SizedBox(height: 15),
+            const SizedBox(height: 10),
             CategoryItem(),
-            SizedBox(height: 7),
+            const SizedBox(height: 10),
 
-            // 2. الجزء الذي يحتوي على التفاعل (البانر + التبويبات + القائمة)
+            // 2. الجزء الذي يبدأ منه التمرير (البانر وما تحته)
             Expanded(
               child: DefaultTabController(
                 length: 4,
-                child: CustomScrollView(
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    // البانر: يختفي للأعلى ويظهر فوراً عند السحب للأسفل (Snap effect)
-                    SliverAppBar(
-                      floating:
-                          true, // يظهر بمجرد السحب للأسفل حتى لو لم تصل للقمة
-                      snap:
-                          true, // يظهر كاملاً بمجرد حركة بسيطة (1 بكسل كما قلت)
-                      automaticallyImplyLeading: false,
-                      backgroundColor: Colors.white,
-                      expandedHeight: 230, // ارتفاع البانر
-                      flexibleSpace: FlexibleSpaceBar(
-                        background: BannerSlider(
-                          banners: _controller.getBanners,
+                child: NestedScrollView(
+                  // لضمان عدم وجود مسافات بيضاء علوية
+                  // padding: EdgeInsets.zero,
+                  headerSliverBuilder: (context, innerBoxIsScrolled) {
+                    return [
+                      // البانر: يختفي عند السحب للأعلى
+                      SliverAppBar(
+                        floating: true,
+                        snap: true,
+                        pinned: false,
+                        automaticallyImplyLeading: false,
+                        backgroundColor: AppColors.white,
+                        expandedHeight: 230,
+                        elevation: 0,
+                        flexibleSpace: FlexibleSpaceBar(
+                          background: BannerSlider(banners: controller.getBanners),
                         ),
                       ),
-                    ),
 
-                    // التبويبات: تثبت في الأعلى (Pinned)
-                    SliverPersistentHeader(
-                      pinned: true,
-                      delegate: _SliverAppBarDelegate(
-                        TabBar(
-                          indicatorColor: Colors.redAccent,
-                          labelColor: Colors.black,
-                          tabs: [
-                            Tab(text: "الكل"),
-                            Tab(text: "الأقرب"),
-                            Tab(text: "الجديدة"),
-                            Tab(text: "المفضلة"),
-                          ],
+                      // التبويبات: تلتصق في الأعلى بمجرد اختفاء البانر
+                      SliverPersistentHeader(
+                        pinned: true,
+                        delegate: _SliverAppBarDelegate(
+                          const TabBar(
+                            indicatorColor: AppColors.red400,
+                            labelColor: AppColors.black,
+                            unselectedLabelColor: AppColors.gray300,
+                            tabs: [
+                              Tab(text: "الكل"),
+                              Tab(text: "الأقرب"),
+                              Tab(text: "الجديدة"),
+                              Tab(text: "المفضلة"),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-
-                    // قائمة المطاعم
-                    SliverFillRemaining(
-                      // hasScrollBody: true,
-                      child: TabBarView(
-                        children: [
-                          RestaurantItem(
-                            restaurants: _controller.getRestaurants(),
-                          ),
-                          RestaurantItem(
-                            restaurants: _controller.getRestaurants(),
-                          ),
-                          RestaurantItem(
-                            restaurants: _controller.getRestaurants(),
-                          ),
-                          RestaurantItem(
-                            restaurants: _controller.getRestaurants(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
+                    ];
+                  },
+                  // محتوى المطاعم: تمرير كامل دون توقف
+                  body: TabBarView(
+                    children: [
+                      RestaurantItem(restaurants: controller.getRestaurants),
+                      RestaurantItem(restaurants: controller.getRestaurants),
+                      RestaurantItem(restaurants: controller.getRestaurants),
+                      RestaurantItem(restaurants: controller.getRestaurants),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -118,10 +104,11 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
 //=================================================
 
 Row _buildHeaderActions(BuildContext ctx) {
-  final NotificationController _controller2 = NotificationController();
+  final NotificationController controller2 = NotificationController();
   return Row(
     children: [
       CustomIconButton(onPressed: () {}, icon: Icons.search),
@@ -144,7 +131,7 @@ Row _buildHeaderActions(BuildContext ctx) {
                 ctx,
                 MaterialPageRoute(
                   builder: (_) => NotificationsScreen(
-                    notification: _controller2.notifications,
+                    notification: controller2.notifications,
                   ),
                 ),
               );
@@ -155,11 +142,11 @@ Row _buildHeaderActions(BuildContext ctx) {
             left: 5,
             top: 0,
             child: CircleAvatar(
-              backgroundColor: Colors.amber,
+              backgroundColor: AppColors.amber100,
               radius: 10,
               child: Text(
                 '1',
-                style: TextStyle(fontSize: 12, color: Colors.black),
+                style: TextStyle(fontSize: 12, color: AppColors.black),
               ),
             ),
           ),
@@ -198,7 +185,6 @@ Widget _buildHeader() {
       // السطر الثاني: العنوان مع أيقونة الموقع
       Row(
         mainAxisSize: MainAxisSize.min,
-        // mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Icon(Icons.location_on, size: 14, color: Colors.white),
 
@@ -209,7 +195,7 @@ Widget _buildHeader() {
           ),
           // const SizedBox(width: 4),
           Spacer(),
-          Icon(Icons.expand_more, size: 16, color: Colors.white),
+          Icon(Icons.expand_more, size: 16, color: AppColors.white),
         ],
       ),
     ],
@@ -222,7 +208,7 @@ Widget _buildIsOpen(BuildContext ctx) {
     padding: const EdgeInsets.only(right: 20.0, top: 0, left: 0),
     child: Row(
       children: [
-        const Icon(Icons.circle, color: Colors.amber, size: 8),
+        const Icon(Icons.circle, color: AppColors.amber100, size: 8),
         const SizedBox(width: 6),
         Text(
           'أوقات الدوام من7:30 الصباح وحتى 11 المساء',
@@ -237,7 +223,7 @@ Widget _buildIsOpen(BuildContext ctx) {
             width: 85,
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 6),
             decoration: BoxDecoration(
-              color: Color(0xFF570704),
+              color: AppColors.red600,
               borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(45),
                 bottomRight: Radius.circular(45),
@@ -271,11 +257,11 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
 
   @override
   Widget build(
-    BuildContext context,
-    double shrinkOffset,
-    bool overlapsContent,
-  ) {
-    return Container(color: Colors.white, child: _tabBar);
+      BuildContext context,
+      double shrinkOffset,
+      bool overlapsContent,
+      ) {
+    return Container(color: AppColors.white, child: _tabBar);
   }
 
   @override

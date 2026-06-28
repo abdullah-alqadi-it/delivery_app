@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import '../../../controller/profile/how_to_use_app_controller.dart';
+import '../../../core/constant/app_colors.dart';
+import '../../../core/shared/custom_bottom_sheet.dart';
+import '../../widgets/profile/balance_bottom_sheet.dart';
 import '../../widgets/profile/card_setting.dart';
+import '../../widgets/profile/city_bottom_sheet.dart';
+import '../orders/order_screen.dart';
 import 'addresses_screen.dart';
 import 'edit_account_screen2.dart';
+import 'how_to_use_app_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -13,6 +19,7 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   bool _isExpanded = false;
+  final HowToUseAppController _controller = HowToUseAppController();
 
   @override
   Widget build(BuildContext context) {
@@ -20,14 +27,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
       backgroundColor: const Color(0xFFE4E0E2),
 
       appBar: AppBar(
-        backgroundColor: const Color(0xFFEB1E49),
+        backgroundColor: AppColors.red400,
         centerTitle: true,
         title: Text('إدارة الحساب', style: TextStyle(color: Colors.white)),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
+          icon: Icon(Icons.arrow_back, size: 26, color: AppColors.white),
         ),
         toolbarHeight: 65,
       ),
@@ -38,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           _buildLocationBadge(),
 
           CardSetting(
-            icon: FontAwesomeIcons.user,
+            imagePath: 'assets/icons/user-line.png',
             title: "الحساب",
             onTap: () {
               Navigator.push(
@@ -47,78 +54,115 @@ class _SettingsScreenState extends State<SettingsScreen> {
               );
             },
           ),
+
           CardSetting(
-            icon: FontAwesomeIcons.receipt,
+            imagePath: 'assets/icons/Order.png',
             title: "طلباتي",
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => OrderScreen()),
+              );
+            },
           ),
+
           CardSetting(
-            icon: Icons.card_membership_outlined,
+            imagePath: 'assets/icons/Favorite.png',
             title: "الاشتراكات (توصيل برو)",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: FontAwesomeIcons.wallet,
+            imagePath: 'assets/icons/wallet_icon.png',
             title: "رصيدي",
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (_) =>
+                    CustomBottomSheet(content: BalanceBottomSheet()),
+              );
+            },
           ),
+
           CardSetting(
-            icon: Icons.location_on_outlined,
+            imagePath: 'assets/icons/Location.png',
             title: "العناوين",
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (_) => AddressesPage()),
+                MaterialPageRoute(builder: (_) => AddressesScreen()),
               );
             },
           ),
+
           CardSetting(
-            icon: FontAwesomeIcons.city,
+            imagePath: 'assets/icons/map.png',
             title: "تغيير المدينة",
-            onTap: () {},
+            onTap: () {
+              CityBottomSheet.show(context);
+            },
           ),
+
           CardSetting(
-            icon: Icons.mark_as_unread_outlined,
+            imagePath: 'assets/icons/built-in-ticket-support.png',
             title: "تواصل معنا",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.notes_outlined,
+            imagePath: 'assets/icons/Security.png',
             title: "سياسة الخصوصية",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.share_outlined,
+            imagePath: 'assets/icons/export.png',
             title: "مشاركة التطبيق",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.play_circle_outline,
+            imagePath: 'assets/icons/reels.png',
             title: "كيفية استخدام التطبيق",
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      HowToUseAppScreen(listVideo: _controller.getVideosList),
+                ),
+              );
+            },
           ),
+
           CardSetting(
-            icon: Icons.restart_alt,
+            imagePath: 'assets/icons/refresh_right_square_icon.png',
             title: "تحديث بيانات التطبيق",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.dark_mode_outlined,
+            imagePath: 'assets/icons/Moon fill.png',
             title: "مظهر التطبيق",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.language,
+            imagePath: 'assets/icons/wallet_icon.png',
             title: "لغةالتطبيق",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.edit_notifications_outlined,
+            imagePath: 'assets/icons/pages-management.png',
             title: "ادارة الاقتراحات",
             onTap: () {},
           ),
+
           CardSetting(
-            icon: Icons.logout,
+            imagePath: 'assets/icons/Logout.png',
             title: "تسجيل الخروج",
             onTap: () {},
           ),
@@ -135,31 +179,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
             style: Theme.of(context).textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
-          SizedBox(height: 10,)
+          SizedBox(height: 10),
         ],
       ),
     );
   }
 
   Widget _buildLocationBadge() {
-    return Container(
-      alignment: Alignment.center,
-      margin: const EdgeInsets.only(top: 10, bottom: 10),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      decoration: BoxDecoration(
-        color: Color(0xFFD57084),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const Icon(Icons.location_on, color: Colors.black, size: 18),
-          const SizedBox(width: 8),
-          Text(
-            'المنطقة الحالية: صنعاء',
-            style: Theme.of(context).textTheme.bodyLarge,
-          ),
-        ],
+    return GestureDetector(
+      onTap: () {
+        CityBottomSheet.show(context);
+      },
+      child: Container(
+        alignment: Alignment.center,
+        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+        padding: const EdgeInsets.symmetric(vertical: 9),
+        decoration: BoxDecoration(
+          color: Color(0xFFDFB5BD),
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            const Icon(Icons.location_on, color: AppColors.black, size: 18),
+            const SizedBox(width: 8),
+            Text(
+              'المنطقة الحالية: صنعاء',
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -173,13 +222,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
         });
       },
 
-      // tilePadding: const EdgeInsets.symmetric(horizontal: 0),
       title: Text(
         'إعدادات متقدمة',
         style: TextStyle(
-          color: Color(0xFFE53935),
+          color: AppColors.red400,
           fontSize: 18,
-          fontWeight: FontWeight.bold,
+          // fontWeight: FontWeight.bold,
         ),
       ),
 
@@ -190,14 +238,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
         duration: const Duration(milliseconds: 300),
         child: const Icon(
           Icons.keyboard_arrow_down,
-          color: Color(0xFFE53935),
+          color: AppColors.red400,
           size: 26,
         ),
       ),
 
       children: [
         CardSetting(
-          icon: Icons.delete_outline,
+          imagePath: 'assets/icons/Trash.png',
           title: "حذف الحساب",
           onTap: () {},
         ),

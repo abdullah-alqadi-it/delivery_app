@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../../core/constant/app_colors.dart';
 import '../../../core/shared/custom_bottom_sheet.dart';
 import '../../../core/shared/rounded_body.dart';
 import '../../../data/models/notifications_model.dart';
 import '../../widgets/home/notification_card.dart';
-import '../../widgets/home/notification_delails_widget.dart';
+import '../../widgets/home/notification_details_widget.dart';
 
 class NotificationsScreen extends StatelessWidget {
   const NotificationsScreen({super.key, required this.notification});
@@ -13,21 +14,21 @@ class NotificationsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFEB1E49),
+      backgroundColor: AppColors.red400,
       appBar: AppBar(
-        backgroundColor: Color(0xFFEB1E49),
+        backgroundColor: AppColors.red400,
         centerTitle: true,
-        title: Text('الاشعارات', style: TextStyle(color: Colors.white)),
+        title: Text('الإشعارات', style: TextStyle(color: AppColors.white)),
         leading: IconButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.arrow_back, size: 26, color: Colors.white),
+          icon: Icon(Icons.arrow_back, size: 26, color: AppColors.white),
         ),
         actions: [
           IconButton(
             onPressed: () {},
-            icon: Icon(Icons.share_outlined, size: 26, color: Colors.white),
+            icon: Icon(Icons.share_outlined, size: 26, color: AppColors.white),
           ),
         ],
         toolbarHeight: 65,

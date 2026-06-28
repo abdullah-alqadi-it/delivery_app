@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Tawseel One Clone',
+      title: 'توصيل ون',
       theme: AppTheme.lightTheme,
 
       localizationsDelegates: context.localizationDelegates,

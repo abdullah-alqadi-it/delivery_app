@@ -3,6 +3,10 @@ import '../../data/models/category_model.dart';
 import '../../data/models/banner_model.dart';
 
 class HomeController {
+
+  List<BannerModel>? _cachedBanners;
+  List<RestaurantModel>?  _cachedRestaurants;
+
   // List<CategoryModel> getCategories() {
   //   return [
   //     CategoryModel(
@@ -34,8 +38,11 @@ class HomeController {
   //   ];
   // }
 
-  List<BannerModel> get getBanners {
-    return [
+   List<BannerModel> get getBanners {
+    if(_cachedBanners != null){
+      return _cachedBanners!;
+    }
+    _cachedBanners = [
       BannerModel(
         id: '1',
         productImage: 'assets/images/h.jpg',
@@ -94,16 +101,21 @@ class HomeController {
         ],
       ),
     ];
+    return _cachedBanners!;
   }
 
-  List<RestaurantModel> getRestaurants() {
-    return [
+  List<RestaurantModel> get getRestaurants {
+
+    if(_cachedRestaurants != null){
+      return _cachedRestaurants!;
+    }
+    _cachedRestaurants = [
       RestaurantModel(
         id: '1',
         name: 'ديستا Desta (مشروع منزلي)',
         address: 'شارع تعز - جولة المرور - حي القادسية',
         category: 'المطاعم',
-        imageUrl: 'assets/images/desta.png',
+        imageUrl: 'assets/images/a.jpg',
         rating: 2.0,
         isOpen: false,
       ),
@@ -112,7 +124,7 @@ class HomeController {
         name: 'توب كركدية للمشروبات الطبيعية (مشروع منزلي)',
         address: 'الدايري - جولة الضبيبي - امام بهارات ابو',
         category: 'المطاعم',
-        imageUrl: 'assets/images/top.png',
+        imageUrl: 'assets/images/p.jpg',
         rating: 5.0,
         isOpen: false,
       ),
@@ -121,7 +133,7 @@ class HomeController {
         name: 'كرميلا (مشروع منزلي)',
         address: 'عصر - جوار مستشفى سبلاس - عمارة الأز',
         category: 'المطاعم',
-        imageUrl: 'assets/images/karmila.png',
+        imageUrl: 'assets/images/d.jpg',
         rating: 3.5,
         isOpen: false,
       ),
@@ -170,6 +182,79 @@ class HomeController {
         rating: 5.0,
         isOpen: false,
       ),
+      RestaurantModel(
+        id: '9',
+        name: 'ديستا Desta (مشروع منزلي)',
+        address: 'شارع تعز - جولة المرور - حي القادسية',
+        category: 'المطاعم',
+        imageUrl: 'assets/images/a.jpg',
+        rating: 2.0,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '10',
+        name: 'توب كركدية للمشروبات الطبيعية (مشروع منزلي)',
+        address: 'الدايري - جولة الضبيبي - امام بهارات ابو',
+        category: 'المطاعم',
+        imageUrl: 'assets/images/p.jpg',
+        rating: 5.0,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '11',
+        name: 'كرميلا (مشروع منزلي)',
+        address: 'عصر - جوار مستشفى سبلاس - عمارة الأز',
+        category: 'المطاعم',
+        imageUrl: 'assets/images/d.jpg',
+        rating: 3.5,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '12',
+        name: 'طيب المذاق Tasty (مشروع منزلي)',
+        address: 'صنعاء الاصبحي خلف مترو مول',
+        category: 'الحلويات والعصائر والمعجنات',
+        imageUrl: 'assets/images/tasty.png',
+        rating: 0.0,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '13',
+        name: 'سبراسو Sabroso (مشروع منزلي)',
+        address: 'حي النهضة',
+        category: 'الحلويات والعصائر والمعجنات',
+        imageUrl: 'assets/images/sabroso.png',
+        rating: 3.0,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '14',
+        name: 'الصنعانية للكعك والمخبوزات (مشروع منزلي)',
+        address: 'حدة - جوار عمارة الغراسي',
+        category: 'الحلويات والعصائر والمعجنات',
+        imageUrl: 'assets/images/sanaa_bakery.png',
+        rating: 0.0,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '15',
+        name: 'يالنجي ورق عنب (مشروع منزلي)',
+        address: 'حدة المدينة جوار صالة سام',
+        category: 'المطاعم',
+        imageUrl: 'assets/images/yalnagi.png',
+        rating: 5.0,
+        isOpen: false,
+      ),
+      RestaurantModel(
+        id: '16',
+        name: 'لغة عنب (مشروع منزلي)',
+        address: 'حي النهضة - خلف سوبر ماركت الأسرة',
+        category: 'المطاعم',
+        imageUrl: 'assets/images/lugha_enab.png',
+        rating: 5.0,
+        isOpen: false,
+      ),
     ];
+    return _cachedRestaurants!;
   }
 }

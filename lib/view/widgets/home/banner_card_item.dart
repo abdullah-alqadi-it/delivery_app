@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../../../core/constant/app_colors.dart';
 import '../../../data/models/banner_model.dart';
 
 class BannerCardItem extends StatelessWidget {
@@ -38,7 +39,7 @@ class BannerCardItem extends StatelessWidget {
             child: IconButton(
               padding: const EdgeInsets.all(2),
               onPressed: () {},
-              icon: Icon(Icons.zoom_in, color: Colors.white, size: 25),
+              icon: Icon(Icons.zoom_in, color: AppColors.white, size: 25),
             ),
           ),
         ),
@@ -55,10 +56,10 @@ class BannerCardItem extends StatelessWidget {
                   right: 2,
                 ),
 
-                color: Color(0xFFF31403),
+                color: AppColors.red400,
                 child: Text(
                   '${banner.nameStore}',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(color: AppColors.white),
                 ),
               ),
               CircleAvatar(
@@ -116,13 +117,13 @@ class DiscountTag extends StatelessWidget {
             height: 60,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(50),
-              color: Color(0xFFF31403),
+              color: AppColors.red400,
             ),
             alignment: Alignment.center,
             child: Text(
               percentage, // عرض النسبة (مثلاً 30%)
               style: TextStyle(
-                color: Colors.white,
+                color: AppColors.white,
                 fontWeight: FontWeight.w900,
                 fontSize: 25,
               ),
@@ -156,7 +157,7 @@ class DiscountTag extends StatelessWidget {
                 left: 2,
                 right: 10,
               ),
-              color: Colors.amber,
+              color: AppColors.amber100,
               child: Text(
                 subtitle_2,
                 style: TextStyle(
