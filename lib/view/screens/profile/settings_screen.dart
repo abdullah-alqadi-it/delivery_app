@@ -9,6 +9,9 @@ import '../orders/order_screen.dart';
 import 'addresses_screen.dart';
 import 'edit_account_screen2.dart';
 import 'how_to_use_app_screen.dart';
+import '../../widgets/profile/contact_us_bottom_sheet.dart';
+import '../../widgets/profile/theme_bottom_sheet.dart';
+import '../../widgets/profile/logout_dialog.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -108,7 +111,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
           CardSetting(
             imagePath: 'assets/icons/built-in-ticket-support.png',
             title: "تواصل معنا",
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  backgroundColor: Colors.transparent,
+                  builder: (_) =>
+                      CustomBottomSheet(
+                      content: ContactUsBottomSheet(),)
+              );
+            },
           ),
 
           CardSetting(
@@ -146,7 +158,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
           CardSetting(
             imagePath: 'assets/icons/Moon fill.png',
             title: "مظهر التطبيق",
-            onTap: () {},
+            onTap: () {
+              showModalBottomSheet(
+                  context: context,
+                  backgroundColor: Colors.transparent,//CustomBottomSheet
+                  builder: (_) => const CustomBottomSheet(
+                      content: ThemeBottomSheet()));
+            },
           ),
 
           CardSetting(
@@ -164,7 +182,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
           CardSetting(
             imagePath: 'assets/icons/Logout.png',
             title: "تسجيل الخروج",
-            onTap: () {},
+            onTap: () {
+              showDialog(
+                  context: context,
+                  builder: (_) => const LogoutDialog(),);
+            },
           ),
 
           _buildAdvancedSettingsSection(),
