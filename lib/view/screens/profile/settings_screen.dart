@@ -1,3 +1,4 @@
+import 'package:delivery_app/view/screens/profile/suggestion_management_screen.dart';
 import 'package:flutter/material.dart';
 import '../../../controller/profile/how_to_use_app_controller.dart';
 import '../../../core/constant/app_colors.dart';
@@ -158,7 +159,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
           CardSetting(
             imagePath: 'assets/icons/pages-management.png',
             title: "ادارة الاقتراحات",
-            onTap: () {},
+            onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const SuggestionsManagementScreen(),
+                  ),
+                );
+
+            },
           ),
 
           CardSetting(
