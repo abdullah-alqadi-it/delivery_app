@@ -1,52 +1,20 @@
 import '../../data/models/restaurant_model.dart';
-import '../../data/models/category_model.dart';
 import '../../data/models/banner_model.dart';
 
 class HomeController {
-
   List<BannerModel>? _cachedBanners;
-  List<RestaurantModel>?  _cachedRestaurants;
+  List<RestaurantModel>? _cachedRestaurants;
 
-  // List<CategoryModel> getCategories() {
-  //   return [
-  //     CategoryModel(
-  //       id: '1',
-  //       name: 'كل التصنيفات',
-  //       iconPath: 'assets/icons/all.png',
-  //       // isSelected: false,
-  //     ),
-  //     CategoryModel(
-  //       id: '2',
-  //       name: 'توصيل يُرو',
-  //       iconPath: 'assets/icons/delivery_pro.png',
-  //     ),
-  //     CategoryModel(
-  //       id: '3',
-  //       name: 'وصل لي',
-  //       iconPath: 'assets/icons/deliver_me.png',
-  //     ),
-  //     CategoryModel(
-  //       id: '4',
-  //       name: 'استلم بنفسك',
-  //       iconPath: 'assets/icons/pickup.png',
-  //     ),
-  //     CategoryModel(
-  //       id: '5',
-  //       name: 'خضروات',
-  //       iconPath: 'assets/icons/vegetables.png',
-  //     ),
-  //   ];
-  // }
 
-   List<BannerModel> get getBanners {
-    if(_cachedBanners != null){
+  List<BannerModel> get getBanners {
+    if (_cachedBanners != null) {
       return _cachedBanners!;
     }
     _cachedBanners = [
       BannerModel(
         id: '1',
         productImage: 'assets/images/h.jpg',
-        imageStore: 'assets/images/girl.jpg',
+        imageStore: 'assets/icons/meal.png',
         nameStore: 'ربيع الشرق',
         offers: [
           OfferModel(
@@ -59,7 +27,7 @@ class HomeController {
       BannerModel(
         id: '2',
         productImage: 'assets/images/p.jpg',
-        imageStore: 'assets/images/girl.jpg',
+        imageStore: 'assets/icons/meal.png',
         nameStore: 'مطعم بيت المندي',
         offers: [
           OfferModel(
@@ -77,7 +45,7 @@ class HomeController {
       BannerModel(
         id: '3',
         productImage: 'assets/images/s.jpg',
-        imageStore: 'assets/images/girl.jpg',
+        imageStore: 'assets/icons/meal.png',
         nameStore: 'ربيع الشرق',
         offers: [
           OfferModel(
@@ -90,7 +58,7 @@ class HomeController {
       BannerModel(
         id: '4',
         productImage: 'assets/images/chicken-cutlet.jpg',
-        imageStore: 'assets/images/girl.jpg',
+        imageStore: 'assets/icons/meal.png',
         nameStore: 'مطعم بيت المندي',
         offers: [
           OfferModel(
@@ -105,8 +73,7 @@ class HomeController {
   }
 
   List<RestaurantModel> get getRestaurants {
-
-    if(_cachedRestaurants != null){
+    if (_cachedRestaurants != null) {
       return _cachedRestaurants!;
     }
     _cachedRestaurants = [

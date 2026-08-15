@@ -5,7 +5,8 @@ import '../../../core/constant/app_colors.dart';
 import '../../../core/shared/custom_iconbutton.dart';
 import '../../../core/shared/rounded_body.dart';
 import '../../widgets/home/banner_slider.dart';
-import '../../widgets/home/category_item.dart';
+import '../../widgets/home/categories_bar.dart';
+// import '../../widgets/home/category_item.dart';
 import '../../widgets/home/restaurant_item.dart';
 import '../profile/addresses_screen.dart';
 import '../profile/settings_screen.dart';
@@ -41,7 +42,8 @@ class HomeScreen extends StatelessWidget {
             // 1. هذا الجزء سيبقى ثابتاً ولن يتحرك أبداً مع السحب
             _buildIsOpen(context),
             const SizedBox(height: 10),
-            CategoryItem(),
+            // CategoryItem(),
+            CategoriesBar(),
             const SizedBox(height: 10),
 
             // 2. الجزء الذي يبدأ منه التمرير (البانر وما تحته)
