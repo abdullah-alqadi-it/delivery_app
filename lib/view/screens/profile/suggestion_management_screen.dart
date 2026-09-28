@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SuggestionsManagementScreen extends StatefulWidget {
-  const SuggestionsManagementScreen({Key? key}) : super(key: key);
+  const SuggestionsManagementScreen({super.key});
 
   @override
   State<SuggestionsManagementScreen> createState() => _SuggestionsManagementScreenState();
@@ -118,7 +118,7 @@ class _SuggestionsManagementScreenState extends State<SuggestionsManagementScree
                   Container(
                     padding: const EdgeInsets.all(24),
                     decoration: BoxDecoration(
-                      color: primaryColor.withOpacity(0.06), // دائرة وردية خفيفة جداً حول الأيقونة
+                      color: primaryColor.withValues(alpha: 0.6), // دائرة وردية خفيفة جداً حول الأيقونة
                       shape: BoxShape.circle,
                     ),
                     child: const Icon(
